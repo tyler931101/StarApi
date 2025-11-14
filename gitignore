@@ -1,0 +1,54 @@
+# Ignore user-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Ignore Visual Studio generated files
+.vs/
+.vscode/
+
+# Ignore build outputs EXCEPT the ones you want to keep
+# (bin and obj ARE allowed — so do NOT ignore them)
+
+# Ignore logs
+*.log
+
+# Ignore temp, cache, and publish artifacts
+**/Properties/launchSettings.json
+*.tmp
+*.temp
+*.cache
+*.bak
+*.orig
+*.pid
+
+# Ignore packages
+packages/
+*.nupkg
+*.snupkg
+
+# Ignore lock files
+project.lock.json
+project.fragment.lock.json
+
+# Ignore publish outputs
+/wwwroot/
+publish/
+dist/
+
+# Ignore Resharper
+_ReSharper*/
+*.DotSettings.user
+
+# Ignore Rider
+.idea/
+
+# Ignore Mac / Linux trash
+.DS_Store
+Thumbs.db
+
+# Do NOT ignore these folders
+!bin/
+!obj/
+!StarDb

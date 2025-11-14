@@ -1,0 +1,43 @@
+/StarApi
+ ├── Controllers/                   # API endpoints (View)
+ │     └── TicketsController.cs
+ │     └── AuthController.cs
+ │     └── UsersController.cs
+ │
+ ├── Application/                   # Business logic (ViewModel)
+ │     ├── DTOs/
+ │     ├── Interfaces/
+ │     ├── Services/
+ │     │    ├── TicketService.cs
+ │     │    ├── AuthService.cs
+ │     │    ├── WorkflowService.cs
+ │     └── Application.csproj
+ │
+ ├── Domain/                        # Entities (Model)
+ │     ├── Entities/
+ │     │    ├── Ticket.cs
+ │     │    ├── Comment.cs
+ │     │    ├── User.cs
+ │     ├── Enums/
+ │     ├── ValueObjects/
+ │     └── Domain.csproj
+ │
+ ├── Infrastructure/                # EF Core, Repositories, Data access
+ │     ├── Data/
+ │     │    ├── AppDbContext.cs
+ │     │    ├── DbInitializer.cs
+ │     ├── Repositories/
+ │     │    ├── TicketRepository.cs
+ │     │    ├── UserRepository.cs
+ │     ├── Configurations/
+ │     └── Infrastructure.csproj
+ │
+ ├── Common/                        # Shared utilities, helpers
+ │     ├── Exceptions/
+ │     ├── Logging/
+ │     └── Extensions/
+ │
+ ├── NebulaApi.csproj
+ ├── Program.cs
+ ├── appsettings.json
+ └── Dockerfile

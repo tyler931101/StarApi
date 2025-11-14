@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarApi", "StarApi.csproj", "{5635D95B-310A-1060-F9E5-EBEE97A40986}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5635D95B-310A-1060-F9E5-EBEE97A40986}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5635D95B-310A-1060-F9E5-EBEE97A40986}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5635D95B-310A-1060-F9E5-EBEE97A40986}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5635D95B-310A-1060-F9E5-EBEE97A40986}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C2AE19C6-6E96-49F5-B90A-8D8A814E6FCB}
+	EndGlobalSection
+EndGlobal

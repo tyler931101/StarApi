@@ -1,0 +1,34 @@
+# Ignore Visual Studio files
+.vs/
+# Ignore build output
+bin/
+obj/
+
+# Ignore config files containing sensitive information
+appsettings.Development.json
+appsettings.json
+
+# Ignore user-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Ignore IDE specific files
+.idea/
+
+# Ignore compiled files
+*.dll
+*.exe
+*.pdb
+*.app
+
+# Ignore generated files
+*.log
+*.cache
+
+# Ignore markdown preview files
+*.vspscc
+
+# Ignore backup and temp files
+*~

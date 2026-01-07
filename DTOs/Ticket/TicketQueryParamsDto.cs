@@ -10,7 +10,5 @@ namespace StarApi.DTOs.Ticket
         public string? Priority { get; set; }
         public Guid? AssignedToUserId { get; set; }
         public Guid? CreatedByUserId { get; set; }
-        public string? SortBy { get; set; }
-        public string? SortOrder { get; set; } = "asc";
     }
 }

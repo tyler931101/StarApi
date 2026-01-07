@@ -392,9 +392,9 @@ namespace StarApi.Services
             return true;
         }
 
-        public async Task<UserActivityDto?> GetUserActivityAsync(Guid userId)
+        public Task<UserActivityDto?> GetUserActivityAsync(Guid userId)
         {
-            return null;
+            return Task.FromResult<UserActivityDto?>(null);
         }
 
         #region Private Methods

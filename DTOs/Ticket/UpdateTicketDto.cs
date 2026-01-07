@@ -11,7 +11,7 @@ namespace StarApi.DTOs.Ticket
         [StringLength(4000)]
         public string? Description { get; set; }
 
-        [RegularExpression(@"^(open|in_progress|resolved|closed)$")]
+        [RegularExpression(@"^(open|in_progress|resolved|testing|closed)$")]
         public string? Status { get; set; }
 
         [RegularExpression(@"^(low|medium|high|urgent)$")]

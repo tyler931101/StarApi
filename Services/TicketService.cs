@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using StarApi.Data;
 using StarApi.DTOs.Ticket;
+using StarApi.DTOs.User;
 using StarApi.Models;
 using StarApi.Services.Interfaces;
 
@@ -19,7 +20,42 @@ namespace StarApi.Services
             _context = context;
         }
 
-        public async Task<(IEnumerable<TicketDto> tickets, int total)> GetTicketsAsync(TicketQueryParamsDto query, Guid currentUserId, bool isAdmin)
+        public async Task<IEnumerable<UserDto>> GetAssignableUsersAsync(Guid currentUserId, bool isAdmin, string? status = null)
+        {
+            var q = _context.Users.AsQueryable();
+
+            // Always exclude disabled users for assignment
+            q = q.Where(u => !u.IsDisabled);
+
+            // Filter by status if provided, otherwise default to "Active"
+            if (!string.IsNullOrWhiteSpace(status))
+            {
+                var s = status.Trim().ToLower();
+                q = q.Where(u => u.Status.ToLower() == s);
+            }
+            else
+            {
+                // Default to active users if no status specified
+                q = q.Where(u => u.Status == "Active");
+            }
+
+            return await q.Select(u => new UserDto
+            {
+                Id = u.Id,
+                Username = u.Username,
+                Email = u.Email,
+                AvatarUrl = u.AvatarUrl,
+                Phone = u.Phone,
+                Role = u.Role,
+                Status = u.Status,
+                CreatedAt = u.CreatedAt,
+                UpdatedAt = u.UpdatedAt,
+                LastLoginAt = u.LastLoginAt,
+                IsVerified = u.IsVerified
+            }).ToListAsync();
+        }
+
+        public async Task<IEnumerable<TicketDto>> GetTicketsAsync(TicketQueryParamsDto query, Guid currentUserId, bool isAdmin)
         {
             var q = _context.Tickets.AsQueryable();
 
@@ -56,21 +92,6 @@ namespace StarApi.Services
                 q = q.Where(t => (t.Title ?? string.Empty).ToLower().Contains(term) || (t.Description ?? string.Empty).ToLower().Contains(term));
             }
 
-            var sortOrder = (query.SortOrder ?? "asc").ToLower() == "desc" ? "desc" : "asc";
-            var sortBy = (query.SortBy ?? "createdAt").ToLower();
-
-            q = sortBy switch
-            {
-                "id" => sortOrder == "asc" ? q.OrderBy(t => t.Id) : q.OrderByDescending(t => t.Id),
-                "title" => sortOrder == "asc" ? q.OrderBy(t => t.Title) : q.OrderByDescending(t => t.Title),
-                "status" => sortOrder == "asc" ? q.OrderBy(t => t.Status) : q.OrderByDescending(t => t.Status),
-                "priority" => sortOrder == "asc" ? q.OrderBy(t => t.Priority) : q.OrderByDescending(t => t.Priority),
-                "updatedat" => sortOrder == "asc" ? q.OrderBy(t => t.UpdatedAt) : q.OrderByDescending(t => t.UpdatedAt),
-                "duedate" => sortOrder == "asc" ? q.OrderBy(t => t.DueDate) : q.OrderByDescending(t => t.DueDate),
-                _ => sortOrder == "asc" ? q.OrderBy(t => t.CreatedAt) : q.OrderByDescending(t => t.CreatedAt)
-            };
-
-            var total = await q.CountAsync();
             var items = await q
                 .Include(t => t.CreatedByUser)
                 .Include(t => t.AssignedToUser)
@@ -93,7 +114,7 @@ namespace StarApi.Services
                 })
                 .ToListAsync();
 
-            return (items, total);
+            return items;
         }
 
         public async Task<TicketDto?> GetTicketAsync(Guid id, Guid currentUserId, bool isAdmin)

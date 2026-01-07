@@ -151,6 +151,7 @@ E:\work\Star\StarApi\obj\Release\net9.0\StarApi.AssemblyInfo.cs
 E:\work\Star\StarApi\obj\Release\net9.0\StarApi.csproj.CoreCompileInputs.cache
 E:\work\Star\StarApi\obj\Release\net9.0\StarApi.MvcApplicationPartsAssemblyInfo.cs
 E:\work\Star\StarApi\obj\Release\net9.0\StarApi.MvcApplicationPartsAssemblyInfo.cache
+E:\work\Star\StarApi\obj\Release\net9.0\StarApi.sourcelink.json
 E:\work\Star\StarApi\obj\Release\net9.0\rjimswa.dswa.cache.json
 E:\work\Star\StarApi\obj\Release\net9.0\rjsmrazor.dswa.cache.json
 E:\work\Star\StarApi\obj\Release\net9.0\rjsmcshtml.dswa.cache.json

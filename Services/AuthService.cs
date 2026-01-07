@@ -67,7 +67,7 @@ namespace StarApi.Services
                     Email = email,
                     PasswordHash = BCrypt.Net.BCrypt.HashPassword(password),
                     Role = "User", // Default role
-                    Status = "Pending",
+                    Status = "Active",
                     CreatedAt = DateTime.UtcNow,
                     IsVerified = false,
                     VerificationToken = GenerateSecureToken(),

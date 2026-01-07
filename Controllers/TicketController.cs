@@ -21,15 +21,22 @@ namespace StarApi.Controllers
             _ticketService = ticketService;
         }
 
+        [HttpGet("assignes")]
+        public async Task<IActionResult> GetAssignes([FromQuery] string? status)
+        {
+            var (userId, isAdmin) = GetContext();
+            var users = await _ticketService.GetAssignableUsersAsync(userId, isAdmin, status);
+            return Ok(new { data = new { users } });
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetTickets([FromQuery] TicketQueryParamsDto query)
         {
             var (userId, isAdmin) = GetContext();
-            var (items, total) = await _ticketService.GetTicketsAsync(query, userId, isAdmin);
+            var items = await _ticketService.GetTicketsAsync(query, userId, isAdmin);
             return Ok(new
             {
-                users = items,
-                total
+                users = items
             });
         }
 

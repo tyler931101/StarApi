@@ -30,7 +30,7 @@ namespace StarApi.Services
             _context = context;
         }
 
-        public async Task<string> SaveImageAsync(IFormFile imageFile, string folderName, string? fileName = null)
+        public Task<string> SaveImageAsync(IFormFile imageFile, string folderName, string? fileName = null)
         {
             try
             {
@@ -45,7 +45,7 @@ namespace StarApi.Services
 
                 // For SQLite, we return a placeholder identifier
                 // Actual saving happens in UpdateUserAvatarAsync
-                return $"sqlite:{Guid.NewGuid()}";
+                return Task.FromResult($"sqlite:{Guid.NewGuid()}");
             }
             catch (Exception ex)
             {

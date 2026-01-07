@@ -368,9 +368,7 @@ namespace StarApi.Services
         {
             var user = await _context.Users.FindAsync(userId);
             return user != null &&
-                   user.Status == "Active" &&
-                   !user.IsDisabled &&
-                   !user.IsLocked;
+                   user.Status == "Active";
         }
 
         public async Task<(string email, bool isVerified)> GetEmailVerificationStatusAsync(Guid userId)
@@ -426,8 +424,6 @@ namespace StarApi.Services
                 UpdatedAt = user.UpdatedAt,
                 LastLoginAt = user.LastLoginAt,
                 IsVerified = user.IsVerified,
-                IsLocked = user.IsLocked,
-                IsDisabled = user.IsDisabled
             };
         }
 

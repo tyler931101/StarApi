@@ -77,10 +77,10 @@ namespace StarApi.Controllers
         }
 
         [HttpGet("report/status")]
-        public async Task<IActionResult> GetStatusReport([FromQuery] Guid? createdByUserId, [FromQuery] Guid? assignedToUserId)
+        public async Task<IActionResult> GetStatusReport([FromQuery] Guid? createdByUserId, [FromQuery] Guid? assignedTo)
         {
             var (userId, isAdmin) = GetContext();
-            var items = await _ticketService.GetStatusCountsAsync(userId, isAdmin, createdByUserId, assignedToUserId);
+            var items = await _ticketService.GetStatusCountsAsync(userId, isAdmin, createdByUserId, assignedTo);
             var total = items.Sum(x => x.Count);
             var byStatus = new
             {

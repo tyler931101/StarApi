@@ -24,7 +24,7 @@ namespace StarApi.Models
         public string Priority { get; set; } = "Medium";
 
         public Guid CreatedByUserId { get; set; }
-        public Guid? AssignedToUserId { get; set; }
+        public Guid? AssignedTo { get; set; }
 
         public User CreatedByUser { get; set; } = null!;
         public User? AssignedToUser { get; set; }

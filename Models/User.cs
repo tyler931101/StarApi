@@ -45,8 +45,5 @@ namespace StarApi.Models
 
         public string? RefreshToken { get; set; }
         public DateTime? RefreshTokenExpiryTime { get; set; }
-
-        public bool IsLocked { get; set; } = false;
-        public bool IsDisabled { get; set; } = false;
     }
 }

@@ -25,7 +25,7 @@ namespace StarApi.Services
             var q = _context.Users.AsQueryable();
 
             // Always exclude disabled users for assignment
-            q = q.Where(u => !u.IsDisabled);
+            q = q.Where(u => u.Status != "InActive");
 
             // Filter by status if provided, otherwise default to "Active"
             if (!string.IsNullOrWhiteSpace(status))
@@ -61,7 +61,7 @@ namespace StarApi.Services
 
             if (!isAdmin)
             {
-                q = q.Where(t => t.CreatedByUserId == currentUserId || t.AssignedToUserId == currentUserId);
+                q = q.Where(t => t.CreatedByUserId == currentUserId || t.AssignedTo == currentUserId);
             }
 
             if (query.CreatedByUserId.HasValue)
@@ -69,9 +69,9 @@ namespace StarApi.Services
                 q = q.Where(t => t.CreatedByUserId == query.CreatedByUserId.Value);
             }
 
-            if (query.AssignedToUserId.HasValue)
+            if (query.AssignedTo.HasValue)
             {
-                q = q.Where(t => t.AssignedToUserId == query.AssignedToUserId.Value);
+                q = q.Where(t => t.AssignedTo == query.AssignedTo.Value);
             }
 
             if (!string.IsNullOrWhiteSpace(query.Status))
@@ -103,11 +103,7 @@ namespace StarApi.Services
                     Status = (t.Status ?? "Open").Trim().ToLower(),
                     Priority = (t.Priority ?? "medium").Trim().ToLower(),
                     CreatedByUserId = t.CreatedByUserId,
-                    CreatedByUsername = t.CreatedByUser.Username,
-                    CreatedByEmail = t.CreatedByUser.Email,
-                    AssignedToUserId = t.AssignedToUserId,
-                    AssignedToUsername = t.AssignedToUser != null ? t.AssignedToUser.Username : null,
-                    AssignedToEmail = t.AssignedToUser != null ? t.AssignedToUser.Email : null,
+                    AssignedTo = t.AssignedTo,
                     CreatedAt = t.CreatedAt,
                     UpdatedAt = t.UpdatedAt,
                     DueDate = t.DueDate
@@ -124,7 +120,7 @@ namespace StarApi.Services
                 .Include(x => x.AssignedToUser)
                 .FirstOrDefaultAsync(x => x.Id == id);
             if (t == null) return null;
-            if (!isAdmin && t.CreatedByUserId != currentUserId && t.AssignedToUserId != currentUserId) return null;
+            if (!isAdmin && t.CreatedByUserId != currentUserId && t.AssignedTo != currentUserId) return null;
             return new TicketDto
             {
                 Id = t.Id,
@@ -133,11 +129,7 @@ namespace StarApi.Services
                 Status = (t.Status ?? "Open").Trim().ToLower(),
                 Priority = (t.Priority ?? "medium").Trim().ToLower(),
                 CreatedByUserId = t.CreatedByUserId,
-                CreatedByUsername = t.CreatedByUser.Username,
-                CreatedByEmail = t.CreatedByUser.Email,
-                AssignedToUserId = t.AssignedToUserId,
-                AssignedToUsername = t.AssignedToUser != null ? t.AssignedToUser.Username : null,
-                AssignedToEmail = t.AssignedToUser != null ? t.AssignedToUser.Email : null,
+                AssignedTo = t.AssignedTo,
                 CreatedAt = t.CreatedAt,
                 UpdatedAt = t.UpdatedAt,
                 DueDate = t.DueDate
@@ -154,7 +146,7 @@ namespace StarApi.Services
                 Status = "Open",
                 Priority = NormalizePriority(dto.Priority),
                 CreatedByUserId = creatorUserId,
-                AssignedToUserId = dto.AssignedToUserId,
+                AssignedTo = dto.AssignedTo,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
                 DueDate = dto.DueDate
@@ -169,13 +161,13 @@ namespace StarApi.Services
         {
             var t = await _context.Tickets.FindAsync(id);
             if (t == null) return null;
-            if (!isAdmin && t.CreatedByUserId != currentUserId && t.AssignedToUserId != currentUserId) return null;
+            if (!isAdmin && t.CreatedByUserId != currentUserId && t.AssignedTo != currentUserId) return null;
 
             if (!string.IsNullOrWhiteSpace(dto.Title) && dto.Title != t.Title) t.Title = dto.Title.Trim();
             if (dto.Description != null && dto.Description != t.Description) t.Description = dto.Description;
             if (!string.IsNullOrWhiteSpace(dto.Status)) t.Status = NormalizeStatus(dto.Status);
             if (!string.IsNullOrWhiteSpace(dto.Priority)) t.Priority = NormalizePriority(dto.Priority);
-            if (dto.AssignedToUserId.HasValue) t.AssignedToUserId = dto.AssignedToUserId.Value;
+            if (dto.AssignedTo.HasValue) t.AssignedTo = dto.AssignedTo.Value;
             if (dto.DueDate.HasValue) t.DueDate = dto.DueDate.Value;
 
             t.UpdatedAt = DateTime.UtcNow;
@@ -193,20 +185,20 @@ namespace StarApi.Services
             return saved > 0;
         }
 
-        public async Task<IEnumerable<TicketStatusCountDto>> GetStatusCountsAsync(Guid currentUserId, bool isAdmin, Guid? createdByUserId, Guid? assignedToUserId)
+        public async Task<IEnumerable<TicketStatusCountDto>> GetStatusCountsAsync(Guid currentUserId, bool isAdmin, Guid? createdByUserId, Guid? AssignedTo)
         {
             var q = _context.Tickets.AsQueryable();
             if (!isAdmin)
             {
-                q = q.Where(t => t.CreatedByUserId == currentUserId || t.AssignedToUserId == currentUserId);
+                q = q.Where(t => t.CreatedByUserId == currentUserId || t.AssignedTo == currentUserId);
             }
             if (createdByUserId.HasValue)
             {
                 q = q.Where(t => t.CreatedByUserId == createdByUserId.Value);
             }
-            if (assignedToUserId.HasValue)
+            if (AssignedTo.HasValue)
             {
-                q = q.Where(t => t.AssignedToUserId == assignedToUserId.Value);
+                q = q.Where(t => t.AssignedTo == AssignedTo.Value);
             }
             var data = await q
                 .GroupBy(t => (t.Status ?? "Open").Trim().ToLower())
@@ -220,10 +212,10 @@ namespace StarApi.Services
             var q = _context.Tickets.AsQueryable();
             if (!isAdmin)
             {
-                q = q.Where(t => t.CreatedByUserId == currentUserId || t.AssignedToUserId == currentUserId);
+                q = q.Where(t => t.CreatedByUserId == currentUserId || t.AssignedTo == currentUserId);
             }
             var rel = (relation ?? "created").Trim().ToLower();
-            if (rel == "assigned") q = q.Where(t => t.AssignedToUserId == userId);
+            if (rel == "assigned") q = q.Where(t => t.AssignedTo == userId);
             else q = q.Where(t => t.CreatedByUserId == userId);
             if (!string.IsNullOrWhiteSpace(status))
             {
@@ -238,17 +230,17 @@ namespace StarApi.Services
             var q = _context.Tickets.AsQueryable();
             if (!isAdmin)
             {
-                q = q.Where(t => t.CreatedByUserId == currentUserId || t.AssignedToUserId == currentUserId);
+                q = q.Where(t => t.CreatedByUserId == currentUserId || t.AssignedTo == currentUserId);
             }
             var s = (status ?? "open").Trim().ToLower();
-            q = q.Where(t => (t.Status ?? string.Empty).ToLower() == s && t.AssignedToUserId != null);
+            q = q.Where(t => (t.Status ?? string.Empty).ToLower() == s && t.AssignedTo != null);
 
             var items = await q
                 .Include(t => t.AssignedToUser)
-                .GroupBy(t => new { t.AssignedToUserId, t.AssignedToUser!.Username, t.AssignedToUser!.Email })
+                .GroupBy(t => new { t.AssignedTo, t.AssignedToUser!.Username, t.AssignedToUser!.Email })
                 .Select(g => new UserTicketCountDto
                 {
-                    UserId = g.Key.AssignedToUserId!.Value,
+                    UserId = g.Key.AssignedTo!.Value,
                     Username = g.Key.Username,
                     Email = g.Key.Email,
                     Count = g.Count()
@@ -264,16 +256,16 @@ namespace StarApi.Services
             var q = _context.Tickets.AsQueryable();
             if (!isAdmin)
             {
-                q = q.Where(t => t.CreatedByUserId == currentUserId || t.AssignedToUserId == currentUserId);
+                q = q.Where(t => t.CreatedByUserId == currentUserId || t.AssignedTo == currentUserId);
             }
-            q = q.Where(t => t.AssignedToUserId != null);
+            q = q.Where(t => t.AssignedTo != null);
 
             var rows = await q
                 .Include(t => t.AssignedToUser)
                 .Select(t => new
                 {
                     Status = (t.Status ?? "Open").Trim().ToLower(),
-                    UserId = t.AssignedToUserId!.Value,
+                    UserId = t.AssignedTo!.Value,
                     Username = t.AssignedToUser!.Username,
                     Email = t.AssignedToUser!.Email
                 })

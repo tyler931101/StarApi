@@ -179,13 +179,13 @@ namespace StarApi.Services
                 //}
 
                 // Check if account is locked/disabled
-                if (user.IsLocked)
-                {
-                    _logger.LogWarning("Login attempt for locked account: {Email}", email);
-                    return (null, null, "Your account has been locked. Please contact support.");
-                }
+                // if (user.IsLocked)
+                // {
+                //     _logger.LogWarning("Login attempt for locked account: {Email}", email);
+                //     return (null, null, "Your account has been locked. Please contact support.");
+                // }
 
-                if (user.Status == "Pending")
+                if (user.Status == "InActive")
                 {
                     _logger.LogWarning("Login attempt for disabled account: {Email}", email);
                     return (null, null, "Your account is disabled. Please contact support.");

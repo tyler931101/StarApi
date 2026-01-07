@@ -51,7 +51,7 @@ namespace StarApi.Data
                 entity.HasIndex(t => t.Status);
                 entity.HasIndex(t => t.Priority);
                 entity.HasIndex(t => t.CreatedByUserId);
-                entity.HasIndex(t => t.AssignedToUserId);
+                entity.HasIndex(t => t.AssignedTo);
                 entity.Property(t => t.Title).IsRequired().HasMaxLength(150);
                 entity.Property(t => t.Description).HasMaxLength(4000);
                 entity.Property(t => t.Status).IsRequired().HasMaxLength(20);
@@ -65,7 +65,7 @@ namespace StarApi.Data
 
                 entity.HasOne(t => t.AssignedToUser)
                     .WithMany()
-                    .HasForeignKey(t => t.AssignedToUserId)
+                    .HasForeignKey(t => t.AssignedTo)
                     .OnDelete(DeleteBehavior.SetNull);
             });
         }

@@ -17,17 +17,15 @@ namespace StarApi.Models
 
         [Required]
         [MaxLength(20)]
-        public string Status { get; set; } = "Open";
+        public string Status { get; set; } = "Todo";
 
         [Required]
         [MaxLength(20)]
         public string Priority { get; set; } = "Medium";
 
-        public Guid CreatedByUserId { get; set; }
         public Guid? AssignedTo { get; set; }
 
         public User CreatedByUser { get; set; } = null!;
-        public User? AssignedToUser { get; set; }
 
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }

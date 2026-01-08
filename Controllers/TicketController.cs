@@ -36,7 +36,7 @@ namespace StarApi.Controllers
             var items = await _ticketService.GetTicketsAsync(query, userId, isAdmin);
             return Ok(new
             {
-                users = items
+                result = items
             });
         }
 
@@ -68,6 +68,16 @@ namespace StarApi.Controllers
             return Ok(updated);
         }
 
+        [HttpPatch("{id}/move")]
+        public async Task<IActionResult> Move(Guid id, [FromBody] UpdateTicketDto body)
+        {
+            var (userId, isAdmin) = GetContext();
+            if (string.IsNullOrWhiteSpace(body.Status)) return BadRequest(new { error = "status is required" });
+            var updated = await _ticketService.MoveTicketAsync(id, userId, isAdmin, body.Status!);
+            if (updated == null) return NotFound();
+            return Ok(new { data = updated });
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
@@ -77,10 +87,10 @@ namespace StarApi.Controllers
         }
 
         [HttpGet("report/status")]
-        public async Task<IActionResult> GetStatusReport([FromQuery] Guid? createdByUserId, [FromQuery] Guid? assignedTo)
+        public async Task<IActionResult> GetStatusReport([FromQuery] Guid? assignedTo)
         {
             var (userId, isAdmin) = GetContext();
-            var items = await _ticketService.GetStatusCountsAsync(userId, isAdmin, createdByUserId, assignedTo);
+            var items = await _ticketService.GetStatusCountsAsync(userId, isAdmin, assignedTo);
             var total = items.Sum(x => x.Count);
             var byStatus = new
             {

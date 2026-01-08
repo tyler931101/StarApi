@@ -16,6 +16,10 @@ namespace StarApi.DTOs.Ticket
         [RegularExpression(@"^(low|medium|high|urgent)$")]
         public string Priority { get; set; } = "medium";
 
+        [Required]
+        [RegularExpression(@"^(todo|in_progress|resolved|testing|done)$")]
+        public string Status { get; set; } = "todo";
+
         public Guid? AssignedTo { get; set; }
 
         public DateTime? DueDate { get; set; }

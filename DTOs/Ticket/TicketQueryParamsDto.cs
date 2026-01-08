@@ -9,6 +9,5 @@ namespace StarApi.DTOs.Ticket
         public string? Status { get; set; }
         public string? Priority { get; set; }
         public Guid? AssignedTo { get; set; }
-        public Guid? CreatedByUserId { get; set; }
     }
 }

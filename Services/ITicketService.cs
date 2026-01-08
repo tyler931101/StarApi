@@ -12,11 +12,12 @@ namespace StarApi.Services.Interfaces
         Task<TicketDto?> GetTicketAsync(Guid id, Guid currentUserId, bool isAdmin);
         Task<TicketDto?> CreateTicketAsync(Guid creatorUserId, CreateTicketDto dto);
         Task<TicketDto?> UpdateTicketAsync(Guid id, Guid currentUserId, bool isAdmin, UpdateTicketDto dto);
+        Task<TicketDto?> MoveTicketAsync(Guid id, Guid currentUserId, bool isAdmin, string status);
         Task<bool> DeleteTicketAsync(Guid id, Guid currentUserId, bool isAdmin);
 
         Task<IEnumerable<UserDto>> GetAssignableUsersAsync(Guid currentUserId, bool isAdmin, string? status = null);
 
-        Task<IEnumerable<TicketStatusCountDto>> GetStatusCountsAsync(Guid currentUserId, bool isAdmin, Guid? createdByUserId, Guid? AssignedTo);
+        Task<IEnumerable<TicketStatusCountDto>> GetStatusCountsAsync(Guid currentUserId, bool isAdmin, Guid? AssignedTo);
         Task<int> GetCountByUserAndStatusAsync(Guid currentUserId, bool isAdmin, Guid userId, string relation, string? status);
         Task<IEnumerable<UserTicketCountDto>> GetAssignedUsersByStatusAsync(Guid currentUserId, bool isAdmin, string status);
         Task<AssignedUsersStatusMatrixDto> GetAssignedUsersStatusMatrixAsync(Guid currentUserId, bool isAdmin);

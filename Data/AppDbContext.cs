@@ -50,7 +50,6 @@ namespace StarApi.Data
             {
                 entity.HasIndex(t => t.Status);
                 entity.HasIndex(t => t.Priority);
-                entity.HasIndex(t => t.CreatedByUserId);
                 entity.HasIndex(t => t.AssignedTo);
                 entity.Property(t => t.Title).IsRequired().HasMaxLength(150);
                 entity.Property(t => t.Description).HasMaxLength(4000);
@@ -58,12 +57,7 @@ namespace StarApi.Data
                 entity.Property(t => t.Priority).IsRequired().HasMaxLength(20);
                 entity.Property(t => t.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
 
-                entity.HasOne(t => t.CreatedByUser)
-                    .WithMany()
-                    .HasForeignKey(t => t.CreatedByUserId)
-                    .OnDelete(DeleteBehavior.Restrict);
-
-                entity.HasOne(t => t.AssignedToUser)
+                entity.HasOne<User>()
                     .WithMany()
                     .HasForeignKey(t => t.AssignedTo)
                     .OnDelete(DeleteBehavior.SetNull);

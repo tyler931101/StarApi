@@ -61,12 +61,7 @@ namespace StarApi.Services
 
             if (!isAdmin)
             {
-                q = q.Where(t => t.CreatedByUserId == currentUserId || t.AssignedTo == currentUserId);
-            }
-
-            if (query.CreatedByUserId.HasValue)
-            {
-                q = q.Where(t => t.CreatedByUserId == query.CreatedByUserId.Value);
+                q = q.Where(t => t.AssignedTo == currentUserId);
             }
 
             if (query.AssignedTo.HasValue)
@@ -92,23 +87,31 @@ namespace StarApi.Services
                 q = q.Where(t => (t.Title ?? string.Empty).ToLower().Contains(term) || (t.Description ?? string.Empty).ToLower().Contains(term));
             }
 
-            var items = await q
-                .Include(t => t.CreatedByUser)
-                .Include(t => t.AssignedToUser)
-                .Select(t => new TicketDto
+            var items = await (
+                from t in q.Include(x => x.CreatedByUser)
+                join u in _context.Users on t.AssignedTo equals u.Id into au
+                from assigned in au.DefaultIfEmpty()
+                select new TicketDto
                 {
                     Id = t.Id,
                     Title = t.Title,
                     Description = t.Description,
-                    Status = (t.Status ?? "Open").Trim().ToLower(),
+                    Status = (t.Status ?? "Todo").Trim().ToLower(),
                     Priority = (t.Priority ?? "medium").Trim().ToLower(),
-                    CreatedByUserId = t.CreatedByUserId,
                     AssignedTo = t.AssignedTo,
+                    Assignee = assigned != null
+                        ? new AssigneeDto
+                        {
+                            Id = assigned.Id,
+                            Username = assigned.Username,
+                            Email = assigned.Email
+                        }
+                        : null,
                     CreatedAt = t.CreatedAt,
                     UpdatedAt = t.UpdatedAt,
                     DueDate = t.DueDate
-                })
-                .ToListAsync();
+                }
+            ).ToListAsync();
 
             return items;
         }
@@ -117,19 +120,26 @@ namespace StarApi.Services
         {
             var t = await _context.Tickets
                 .Include(x => x.CreatedByUser)
-                .Include(x => x.AssignedToUser)
                 .FirstOrDefaultAsync(x => x.Id == id);
             if (t == null) return null;
-            if (!isAdmin && t.CreatedByUserId != currentUserId && t.AssignedTo != currentUserId) return null;
+            if (!isAdmin && t.AssignedTo != currentUserId) return null;
+            var assigned = await _context.Users.FirstOrDefaultAsync(u => t.AssignedTo != null && u.Id == t.AssignedTo.Value);
             return new TicketDto
             {
                 Id = t.Id,
                 Title = t.Title,
                 Description = t.Description,
-                Status = (t.Status ?? "Open").Trim().ToLower(),
+                Status = (t.Status ?? "Todo").Trim().ToLower(),
                 Priority = (t.Priority ?? "medium").Trim().ToLower(),
-                CreatedByUserId = t.CreatedByUserId,
                 AssignedTo = t.AssignedTo,
+                Assignee = assigned != null
+                    ? new AssigneeDto
+                    {
+                        Id = assigned.Id,
+                        Username = assigned.Username,
+                        Email = assigned.Email
+                    }
+                    : null,
                 CreatedAt = t.CreatedAt,
                 UpdatedAt = t.UpdatedAt,
                 DueDate = t.DueDate
@@ -143,14 +153,17 @@ namespace StarApi.Services
                 Id = Guid.NewGuid(),
                 Title = dto.Title.Trim(),
                 Description = dto.Description,
-                Status = "Open",
+                Status = "Todo",
                 Priority = NormalizePriority(dto.Priority),
-                CreatedByUserId = creatorUserId,
                 AssignedTo = dto.AssignedTo,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
                 DueDate = dto.DueDate
             };
+
+            var creator = await _context.Users.FindAsync(creatorUserId);
+            if (creator == null) return null;
+            ticket.CreatedByUser = creator;
 
             _context.Tickets.Add(ticket);
             await _context.SaveChangesAsync();
@@ -161,7 +174,7 @@ namespace StarApi.Services
         {
             var t = await _context.Tickets.FindAsync(id);
             if (t == null) return null;
-            if (!isAdmin && t.CreatedByUserId != currentUserId && t.AssignedTo != currentUserId) return null;
+            if (!isAdmin && t.AssignedTo != currentUserId) return null;
 
             if (!string.IsNullOrWhiteSpace(dto.Title) && dto.Title != t.Title) t.Title = dto.Title.Trim();
             if (dto.Description != null && dto.Description != t.Description) t.Description = dto.Description;
@@ -175,33 +188,41 @@ namespace StarApi.Services
             return await GetTicketAsync(t.Id, currentUserId, isAdmin);
         }
 
+        public async Task<TicketDto?> MoveTicketAsync(Guid id, Guid currentUserId, bool isAdmin, string status)
+        {
+            var t = await _context.Tickets.FindAsync(id);
+            if (t == null) return null;
+            if (!isAdmin && t.AssignedTo != currentUserId) return null;
+
+            t.Status = NormalizeStatus(status);
+            t.UpdatedAt = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+            return await GetTicketAsync(t.Id, currentUserId, isAdmin);
+        }
+
         public async Task<bool> DeleteTicketAsync(Guid id, Guid currentUserId, bool isAdmin)
         {
             var t = await _context.Tickets.FindAsync(id);
             if (t == null) return false;
-            if (!isAdmin && t.CreatedByUserId != currentUserId) return false;
+            if (!isAdmin) return false;
             _context.Tickets.Remove(t);
             var saved = await _context.SaveChangesAsync();
             return saved > 0;
         }
 
-        public async Task<IEnumerable<TicketStatusCountDto>> GetStatusCountsAsync(Guid currentUserId, bool isAdmin, Guid? createdByUserId, Guid? AssignedTo)
+        public async Task<IEnumerable<TicketStatusCountDto>> GetStatusCountsAsync(Guid currentUserId, bool isAdmin, Guid? AssignedTo)
         {
             var q = _context.Tickets.AsQueryable();
             if (!isAdmin)
             {
-                q = q.Where(t => t.CreatedByUserId == currentUserId || t.AssignedTo == currentUserId);
-            }
-            if (createdByUserId.HasValue)
-            {
-                q = q.Where(t => t.CreatedByUserId == createdByUserId.Value);
+                q = q.Where(t => t.AssignedTo == currentUserId);
             }
             if (AssignedTo.HasValue)
             {
                 q = q.Where(t => t.AssignedTo == AssignedTo.Value);
             }
             var data = await q
-                .GroupBy(t => (t.Status ?? "Open").Trim().ToLower())
+                .GroupBy(t => (t.Status ?? "todo").Trim().ToLower())
                 .Select(g => new TicketStatusCountDto { Status = g.Key, Count = g.Count() })
                 .ToListAsync();
             return data;
@@ -212,11 +233,10 @@ namespace StarApi.Services
             var q = _context.Tickets.AsQueryable();
             if (!isAdmin)
             {
-                q = q.Where(t => t.CreatedByUserId == currentUserId || t.AssignedTo == currentUserId);
+                q = q.Where(t => t.AssignedTo == currentUserId);
             }
             var rel = (relation ?? "created").Trim().ToLower();
             if (rel == "assigned") q = q.Where(t => t.AssignedTo == userId);
-            else q = q.Where(t => t.CreatedByUserId == userId);
             if (!string.IsNullOrWhiteSpace(status))
             {
                 var s = status.Trim().ToLower();
@@ -230,23 +250,26 @@ namespace StarApi.Services
             var q = _context.Tickets.AsQueryable();
             if (!isAdmin)
             {
-                q = q.Where(t => t.CreatedByUserId == currentUserId || t.AssignedTo == currentUserId);
+                q = q.Where(t => t.AssignedTo == currentUserId);
             }
-            var s = (status ?? "open").Trim().ToLower();
+            var s = (status ?? "todo").Trim().ToLower();
             q = q.Where(t => (t.Status ?? string.Empty).ToLower() == s && t.AssignedTo != null);
 
-            var items = await q
-                .Include(t => t.AssignedToUser)
-                .GroupBy(t => new { t.AssignedTo, t.AssignedToUser!.Username, t.AssignedToUser!.Email })
-                .Select(g => new UserTicketCountDto
+            var items = await (
+                from t in q
+                where t.AssignedTo != null
+                join u in _context.Users on t.AssignedTo equals u.Id
+                group u by new { u.Id, u.Username, u.Email } into g
+                select new UserTicketCountDto
                 {
-                    UserId = g.Key.AssignedTo!.Value,
+                    UserId = g.Key.Id,
                     Username = g.Key.Username,
                     Email = g.Key.Email,
                     Count = g.Count()
-                })
-                .OrderByDescending(x => x.Count)
-                .ToListAsync();
+                }
+            )
+            .OrderByDescending(x => x.Count)
+            .ToListAsync();
 
             return items;
         }
@@ -256,29 +279,32 @@ namespace StarApi.Services
             var q = _context.Tickets.AsQueryable();
             if (!isAdmin)
             {
-                q = q.Where(t => t.CreatedByUserId == currentUserId || t.AssignedTo == currentUserId);
+                q = q.Where(t => t.AssignedTo == currentUserId);
             }
             q = q.Where(t => t.AssignedTo != null);
 
-            var rows = await q
-                .Include(t => t.AssignedToUser)
-                .Select(t => new
+            var rows = await (
+                from t in q
+                where t.AssignedTo != null
+                join u in _context.Users on t.AssignedTo equals u.Id
+                select new
                 {
-                    Status = (t.Status ?? "Open").Trim().ToLower(),
-                    UserId = t.AssignedTo!.Value,
-                    Username = t.AssignedToUser!.Username,
-                    Email = t.AssignedToUser!.Email
-                })
-                .GroupBy(x => new { x.Status, x.UserId, x.Username, x.Email })
-                .Select(g => new
-                {
-                    g.Key.Status,
-                    g.Key.UserId,
-                    g.Key.Username,
-                    g.Key.Email,
-                    Count = g.Count()
-                })
-                .ToListAsync();
+                    Status = (t.Status ?? "Todo").Trim().ToLower(),
+                    UserId = u.Id,
+                    Username = u.Username,
+                    Email = u.Email
+                }
+            )
+            .GroupBy(x => new { x.Status, x.UserId, x.Username, x.Email })
+            .Select(g => new
+            {
+                g.Key.Status,
+                g.Key.UserId,
+                g.Key.Username,
+                g.Key.Email,
+                Count = g.Count()
+            })
+            .ToListAsync();
 
             IEnumerable<UserTicketCountDto> map(string status) => rows
                 .Where(r => r.Status == status)
@@ -294,8 +320,9 @@ namespace StarApi.Services
 
             return new AssignedUsersStatusMatrixDto
             {
-                Open = map("open"),
+                Todo = map("todo"),
                 In_Progress = map("in_progress"),
+                Testing = map("testing"),
                 Resolved = map("resolved"),
                 Closed = map("closed")
             };
@@ -315,13 +342,14 @@ namespace StarApi.Services
 
         private static string NormalizeStatus(string status)
         {
-            var s = (status ?? "open").Trim().ToLower();
+            var s = (status ?? "todo").Trim().ToLower();
             return s switch
             {
                 "in_progress" => "In_Progress",
                 "resolved" => "Resolved",
                 "closed" => "Closed",
-                _ => "Open"
+                "testing" => "Testing",
+                _ => "Todo"
             };
         }
     }

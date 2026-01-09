@@ -83,7 +83,8 @@
               "RelativeToolTip": "DTOs\\Ticket\\UpdateTicketDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAA6AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-05T12:15:28.988Z"
+              "WhenOpened": "2025-12-05T12:15:28.988Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -95,7 +96,8 @@
               "RelativeToolTip": "DTOs\\Ticket\\AssignedUsersStatusMatrixDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAABmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-05T12:15:17.828Z"
+              "WhenOpened": "2025-12-05T12:15:17.828Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -107,7 +109,8 @@
               "RelativeToolTip": "DTOs\\Ticket\\TicketDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-05T12:15:08.372Z"
+              "WhenOpened": "2025-12-05T12:15:08.372Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -119,7 +122,8 @@
               "RelativeToolTip": "Services\\TicketService.cs",
               "ViewState": "AgIAADsAAAAAAAAAAAAAADgAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-05T12:09:20.038Z"
+              "WhenOpened": "2025-12-05T12:09:20.038Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -131,7 +135,8 @@
               "RelativeToolTip": "DTOs\\Ticket\\TicketQueryParamsDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-05T12:08:30.824Z"
+              "WhenOpened": "2025-12-05T12:08:30.824Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -143,7 +148,8 @@
               "RelativeToolTip": "DTOs\\Ticket\\CreateTicketDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-05T12:15:11.349Z"
+              "WhenOpened": "2025-12-05T12:15:11.349Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -155,7 +161,8 @@
               "RelativeToolTip": "Controllers\\TicketController.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAAAAAwAAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-05T07:33:23.592Z"
+              "WhenOpened": "2025-12-05T07:33:23.592Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -167,7 +174,8 @@
               "RelativeToolTip": "DTOs\\Ticket\\TicketStatusCountDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-05T12:15:22.932Z"
+              "WhenOpened": "2025-12-05T12:15:22.932Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -179,7 +187,8 @@
               "RelativeToolTip": "Services\\UserService.cs",
               "ViewState": "AgIAAP8BAAAAAAAAAAAUwBQCAAA/AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-05T07:48:48.073Z"
+              "WhenOpened": "2025-12-05T07:48:48.073Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -191,7 +200,8 @@
               "RelativeToolTip": "Controllers\\AdminController.cs",
               "ViewState": "AgIAACoAAAAAAAAAAAAAAD0AAABAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-05T07:48:03.451Z"
+              "WhenOpened": "2025-12-05T07:48:03.451Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -203,7 +213,8 @@
               "RelativeToolTip": "Controllers\\UserController.cs",
               "ViewState": "AgIAADsBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-05T07:33:27.622Z"
+              "WhenOpened": "2025-12-05T07:33:27.622Z",
+              "EditorCaption": ""
             }
           ]
         }

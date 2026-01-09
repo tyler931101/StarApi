@@ -59,10 +59,10 @@ namespace StarApi.Services
         {
             var q = _context.Tickets.AsQueryable();
 
-            if (!isAdmin)
-            {
-                q = q.Where(t => t.AssignedTo == currentUserId);
-            }
+            // if (!isAdmin)
+            // {
+            //     q = q.Where(t => t.AssignedTo == currentUserId);
+            // }
 
             if (query.AssignedTo.HasValue)
             {
@@ -122,7 +122,6 @@ namespace StarApi.Services
                 .Include(x => x.CreatedByUser)
                 .FirstOrDefaultAsync(x => x.Id == id);
             if (t == null) return null;
-            if (!isAdmin && t.AssignedTo != currentUserId) return null;
             var assigned = await _context.Users.FirstOrDefaultAsync(u => t.AssignedTo != null && u.Id == t.AssignedTo.Value);
             return new TicketDto
             {
@@ -213,10 +212,6 @@ namespace StarApi.Services
         public async Task<IEnumerable<TicketStatusCountDto>> GetStatusCountsAsync(Guid currentUserId, bool isAdmin, Guid? AssignedTo)
         {
             var q = _context.Tickets.AsQueryable();
-            if (!isAdmin)
-            {
-                q = q.Where(t => t.AssignedTo == currentUserId);
-            }
             if (AssignedTo.HasValue)
             {
                 q = q.Where(t => t.AssignedTo == AssignedTo.Value);
@@ -231,10 +226,6 @@ namespace StarApi.Services
         public async Task<int> GetCountByUserAndStatusAsync(Guid currentUserId, bool isAdmin, Guid userId, string relation, string? status)
         {
             var q = _context.Tickets.AsQueryable();
-            if (!isAdmin)
-            {
-                q = q.Where(t => t.AssignedTo == currentUserId);
-            }
             var rel = (relation ?? "created").Trim().ToLower();
             if (rel == "assigned") q = q.Where(t => t.AssignedTo == userId);
             if (!string.IsNullOrWhiteSpace(status))
@@ -248,10 +239,6 @@ namespace StarApi.Services
         public async Task<IEnumerable<UserTicketCountDto>> GetAssignedUsersByStatusAsync(Guid currentUserId, bool isAdmin, string status)
         {
             var q = _context.Tickets.AsQueryable();
-            if (!isAdmin)
-            {
-                q = q.Where(t => t.AssignedTo == currentUserId);
-            }
             var s = (status ?? "todo").Trim().ToLower();
             q = q.Where(t => (t.Status ?? string.Empty).ToLower() == s && t.AssignedTo != null);
 
@@ -277,10 +264,6 @@ namespace StarApi.Services
         public async Task<AssignedUsersStatusMatrixDto> GetAssignedUsersStatusMatrixAsync(Guid currentUserId, bool isAdmin)
         {
             var q = _context.Tickets.AsQueryable();
-            if (!isAdmin)
-            {
-                q = q.Where(t => t.AssignedTo == currentUserId);
-            }
             q = q.Where(t => t.AssignedTo != null);
 
             var rows = await (

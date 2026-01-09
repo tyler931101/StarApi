@@ -44,7 +44,7 @@ namespace StarApi.Controllers
             });
         }
 
-        [HttpGet("users/{id}")]
+        [HttpGet("user/{id}")]
         public async Task<IActionResult> GetUser(Guid id)
         {
             var user = await _userService.GetUserByIdAsync(id);
@@ -52,24 +52,46 @@ namespace StarApi.Controllers
             return Ok(user);
         }
 
-        
 
-        [HttpPut("users/{id}")]
+
+        [HttpPut("user/{id}")]
         public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UpdateUserAdminDto dto)
         {
             try
             {
+                if (dto == null)
+                {
+                    return BadRequest(new { success = false, message = "Update data is required" });
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    var errors = ModelState
+                        .Where(x => x.Value?.Errors.Count > 0)
+                        .SelectMany(x => x.Value!.Errors.Select(e => new { field = x.Key, message = e.ErrorMessage }))
+                        .ToList();
+                    return BadRequest(new { success = false, message = "Validation failed", errors });
+                }
+
                 var updated = await _userService.UpdateUserAsync(id, dto);
-                if (updated == null) return NotFound();
-                return Ok(updated);
+                if (updated == null) return NotFound(new { success = false, message = "User not found" });
+                return Ok(new { success = true, data = updated });
             }
             catch (InvalidOperationException ex)
             {
-                return Conflict(new { message = ex.Message });
+                return Conflict(new { success = false, message = ex.Message });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new { success = false, message = "An error occurred while updating the user" });
             }
         }
 
-        [HttpDelete("users/{id}")]
+        [HttpDelete("user/{id}")]
         public async Task<IActionResult> DeleteUser(Guid id)
         {
             var ok = await _userService.DeleteUserAsync(id);

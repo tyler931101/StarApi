@@ -509,40 +509,51 @@ namespace StarApi.Services
             };
         }
 
-        
+
 
         public async Task<UserDto?> UpdateUserAsync(Guid id, UpdateUserAdminDto dto)
         {
             var user = await _context.Users.FindAsync(id);
             if (user == null) return null;
 
-            if (!string.IsNullOrWhiteSpace(dto.Username) && dto.Username != user.Username)
+            // Normalize empty strings to null for optional fields
+            var username = string.IsNullOrWhiteSpace(dto.Username) ? null : dto.Username.Trim();
+            var email = string.IsNullOrWhiteSpace(dto.Email) ? null : dto.Email.Trim();
+            var phone = string.IsNullOrWhiteSpace(dto.Phone) ? null : dto.Phone.Trim();
+            var role = string.IsNullOrWhiteSpace(dto.Role) ? null : dto.Role.Trim();
+            var status = string.IsNullOrWhiteSpace(dto.Status) ? null : dto.Status.Trim();
+
+            if (username != null && username != user.Username)
             {
-                var exists = await _context.Users.AnyAsync(u => u.Username == dto.Username && u.Id != id);
+                var exists = await _context.Users.AnyAsync(u => u.Username == username && u.Id != id);
                 if (exists) throw new InvalidOperationException("Username is already taken");
-                user.Username = dto.Username.Trim();
+                user.Username = username;
             }
 
-            if (!string.IsNullOrWhiteSpace(dto.Email) && dto.Email != user.Email)
+            if (email != null && email != user.Email)
             {
-                var exists = await _context.Users.AnyAsync(u => u.Email == dto.Email && u.Id != id);
+                // Validate email format
+                try { new System.Net.Mail.MailAddress(email); }
+                catch { throw new ArgumentException("Invalid email format"); }
+
+                var exists = await _context.Users.AnyAsync(u => u.Email == email && u.Id != id);
                 if (exists) throw new InvalidOperationException("Email is already in use");
-                user.Email = dto.Email.Trim();
+                user.Email = email;
             }
 
-            if (dto.Phone != null && dto.Phone != user.Phone)
+            if (phone != null && phone != user.Phone)
             {
-                user.Phone = dto.Phone.Trim();
+                user.Phone = phone;
             }
 
-            if (!string.IsNullOrWhiteSpace(dto.Role))
+            if (role != null)
             {
-                user.Role = NormalizeRole(dto.Role);
+                user.Role = NormalizeRole(role);
             }
 
-            if (!string.IsNullOrWhiteSpace(dto.Status))
+            if (status != null)
             {
-                user.Status = NormalizeStatus(dto.Status);
+                user.Status = NormalizeStatus(status);
             }
 
             user.UpdatedAt = DateTime.UtcNow;

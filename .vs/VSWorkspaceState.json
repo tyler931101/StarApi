@@ -1,6 +1,12 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Controllers",
+    "\\DTOs",
+    "\\DTOs\\Chat",
+    "\\Services",
+    "\\Services\\Chat"
   ],
+  "SelectedNode": "\\Services\\Chat\\ChatService.cs",
   "PreviewInSolutionExplorer": false
 }

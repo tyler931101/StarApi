@@ -440,6 +440,12 @@ namespace StarApi.Services
                 q = q.Where(u => (u.Status ?? string.Empty).ToLower() == status);
             }
 
+            if (!string.IsNullOrWhiteSpace(query.Role))
+            {
+                var role = (query.Role ?? string.Empty).Trim().ToLower();
+                q = q.Where(u => (u.Role ?? string.Empty).ToLower() == role);
+            }
+
             if (!string.IsNullOrWhiteSpace(query.Search))
             {
                 var term = query.Search.Trim().ToLower();

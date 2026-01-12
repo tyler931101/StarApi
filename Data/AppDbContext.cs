@@ -11,10 +11,29 @@ namespace StarApi.Data
 
         public DbSet<User> Users { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<ChatMessage> ChatMessages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            // Configure ChatMessage entity
+            modelBuilder.Entity<ChatMessage>(entity =>
+            {
+                entity.HasIndex(m => m.SenderId);
+                entity.HasIndex(m => m.ReceiverId);
+                entity.HasIndex(m => m.CreatedAt);
+
+                entity.HasOne(m => m.Sender)
+                    .WithMany()
+                    .HasForeignKey(m => m.SenderId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(m => m.Receiver)
+                    .WithMany()
+                    .HasForeignKey(m => m.ReceiverId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
 
             // Configure User entity
             modelBuilder.Entity<User>(entity =>
@@ -57,10 +76,18 @@ namespace StarApi.Data
                 entity.Property(t => t.Priority).IsRequired().HasMaxLength(20);
                 entity.Property(t => t.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
 
+                entity.Property<Guid>("CreatedByUserId");
+
                 entity.HasOne<User>()
                     .WithMany()
                     .HasForeignKey(t => t.AssignedTo)
                     .OnDelete(DeleteBehavior.SetNull);
+
+                entity.HasOne(t => t.CreatedByUser)
+                    .WithMany()
+                    .HasForeignKey("CreatedByUserId")
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.Restrict);
             });
         }
     }

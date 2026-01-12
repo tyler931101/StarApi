@@ -3,6 +3,30 @@
   "WorkspaceRootPath": "E:\\work\\Star\\StarApi\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\work\\Star\\StarApi\\Services\\Chat\\ChatService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Services\\Chat\\ChatService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\work\\Star\\StarApi\\Controllers\\ChatController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Controllers\\ChatController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\work\\Star\\StarApi\\DTOs\\Chat\\SendMessageDto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:DTOs\\Chat\\SendMessageDto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\work\\Star\\StarApi\\DTOs\\Chat\\ChatUserListResponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:DTOs\\Chat\\ChatUserListResponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\work\\Star\\StarApi\\DTOs\\Chat\\ChatUserDto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:DTOs\\Chat\\ChatUserDto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\work\\Star\\StarApi\\DTOs\\Chat\\ChatMessageDto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:DTOs\\Chat\\ChatMessageDto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\work\\Star\\StarApi\\DTOs\\Ticket\\UserTicketCountDto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:DTOs\\Ticket\\UserTicketCountDto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -63,6 +87,84 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "ChatService.cs",
+              "DocumentMoniker": "E:\\work\\Star\\StarApi\\Services\\Chat\\ChatService.cs",
+              "RelativeDocumentMoniker": "Services\\Chat\\ChatService.cs",
+              "ToolTip": "E:\\work\\Star\\StarApi\\Services\\Chat\\ChatService.cs",
+              "RelativeToolTip": "Services\\Chat\\ChatService.cs",
+              "ViewState": "AgIAAEgAAAAAAAAAAAAAABQAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-11T05:50:28.973Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ChatController.cs",
+              "DocumentMoniker": "E:\\work\\Star\\StarApi\\Controllers\\ChatController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ChatController.cs",
+              "ToolTip": "E:\\work\\Star\\StarApi\\Controllers\\ChatController.cs",
+              "RelativeToolTip": "Controllers\\ChatController.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAABIAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-11T05:50:14.872Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "SendMessageDto.cs",
+              "DocumentMoniker": "E:\\work\\Star\\StarApi\\DTOs\\Chat\\SendMessageDto.cs",
+              "RelativeDocumentMoniker": "DTOs\\Chat\\SendMessageDto.cs",
+              "ToolTip": "E:\\work\\Star\\StarApi\\DTOs\\Chat\\SendMessageDto.cs",
+              "RelativeToolTip": "DTOs\\Chat\\SendMessageDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-11T05:50:12.565Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ChatUserListResponse.cs",
+              "DocumentMoniker": "E:\\work\\Star\\StarApi\\DTOs\\Chat\\ChatUserListResponse.cs",
+              "RelativeDocumentMoniker": "DTOs\\Chat\\ChatUserListResponse.cs",
+              "ToolTip": "E:\\work\\Star\\StarApi\\DTOs\\Chat\\ChatUserListResponse.cs",
+              "RelativeToolTip": "DTOs\\Chat\\ChatUserListResponse.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-11T05:50:11.285Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ChatUserDto.cs",
+              "DocumentMoniker": "E:\\work\\Star\\StarApi\\DTOs\\Chat\\ChatUserDto.cs",
+              "RelativeDocumentMoniker": "DTOs\\Chat\\ChatUserDto.cs",
+              "ToolTip": "E:\\work\\Star\\StarApi\\DTOs\\Chat\\ChatUserDto.cs",
+              "RelativeToolTip": "DTOs\\Chat\\ChatUserDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-11T05:50:06.961Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ChatMessageDto.cs",
+              "DocumentMoniker": "E:\\work\\Star\\StarApi\\DTOs\\Chat\\ChatMessageDto.cs",
+              "RelativeDocumentMoniker": "DTOs\\Chat\\ChatMessageDto.cs",
+              "ToolTip": "E:\\work\\Star\\StarApi\\DTOs\\Chat\\ChatMessageDto.cs",
+              "RelativeToolTip": "DTOs\\Chat\\ChatMessageDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-11T05:50:00.892Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "UserTicketCountDto.cs",
               "DocumentMoniker": "E:\\work\\Star\\StarApi\\DTOs\\Ticket\\UserTicketCountDto.cs",
               "RelativeDocumentMoniker": "DTOs\\Ticket\\UserTicketCountDto.cs",
@@ -75,7 +177,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 12,
               "Title": "UpdateTicketDto.cs",
               "DocumentMoniker": "E:\\work\\Star\\StarApi\\DTOs\\Ticket\\UpdateTicketDto.cs",
               "RelativeDocumentMoniker": "DTOs\\Ticket\\UpdateTicketDto.cs",
@@ -87,7 +189,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 9,
               "Title": "AssignedUsersStatusMatrixDto.cs",
               "DocumentMoniker": "E:\\work\\Star\\StarApi\\DTOs\\Ticket\\AssignedUsersStatusMatrixDto.cs",
               "RelativeDocumentMoniker": "DTOs\\Ticket\\AssignedUsersStatusMatrixDto.cs",
@@ -99,7 +201,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 13,
               "Title": "TicketDto.cs",
               "DocumentMoniker": "E:\\work\\Star\\StarApi\\DTOs\\Ticket\\TicketDto.cs",
               "RelativeDocumentMoniker": "DTOs\\Ticket\\TicketDto.cs",
@@ -111,7 +213,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 7,
               "Title": "TicketService.cs",
               "DocumentMoniker": "E:\\work\\Star\\StarApi\\Services\\TicketService.cs",
               "RelativeDocumentMoniker": "Services\\TicketService.cs",
@@ -123,7 +225,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 11,
               "Title": "TicketQueryParamsDto.cs",
               "DocumentMoniker": "E:\\work\\Star\\StarApi\\DTOs\\Ticket\\TicketQueryParamsDto.cs",
               "RelativeDocumentMoniker": "DTOs\\Ticket\\TicketQueryParamsDto.cs",
@@ -135,7 +237,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 10,
               "Title": "CreateTicketDto.cs",
               "DocumentMoniker": "E:\\work\\Star\\StarApi\\DTOs\\Ticket\\CreateTicketDto.cs",
               "RelativeDocumentMoniker": "DTOs\\Ticket\\CreateTicketDto.cs",
@@ -147,7 +249,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 8,
               "Title": "TicketController.cs",
               "DocumentMoniker": "E:\\work\\Star\\StarApi\\Controllers\\TicketController.cs",
               "RelativeDocumentMoniker": "Controllers\\TicketController.cs",
@@ -159,7 +261,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 14,
               "Title": "TicketStatusCountDto.cs",
               "DocumentMoniker": "E:\\work\\Star\\StarApi\\DTOs\\Ticket\\TicketStatusCountDto.cs",
               "RelativeDocumentMoniker": "DTOs\\Ticket\\TicketStatusCountDto.cs",
@@ -171,7 +273,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 15,
               "Title": "UserService.cs",
               "DocumentMoniker": "E:\\work\\Star\\StarApi\\Services\\UserService.cs",
               "RelativeDocumentMoniker": "Services\\UserService.cs",
@@ -183,7 +285,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 16,
               "Title": "AdminController.cs",
               "DocumentMoniker": "E:\\work\\Star\\StarApi\\Controllers\\AdminController.cs",
               "RelativeDocumentMoniker": "Controllers\\AdminController.cs",
@@ -195,7 +297,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 17,
               "Title": "UserController.cs",
               "DocumentMoniker": "E:\\work\\Star\\StarApi\\Controllers\\UserController.cs",
               "RelativeDocumentMoniker": "Controllers\\UserController.cs",

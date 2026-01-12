@@ -15,6 +15,7 @@ using Microsoft.Extensions.FileProviders;
 using System.IO;
 using Microsoft.Extensions.Configuration;
 using System.Linq;
+using StarApi.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,9 @@ builder.Services.AddScoped<IFileStorageService, LocalFileStorageService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<ITicketService, TicketService>();
 builder.Services.AddScoped<IChatService, ChatService>();
+
+// Add SignalR with JWT authentication
+builder.Services.AddSignalR();
 
 // Configure file upload settings
 builder.Services.Configure<FormOptions>(options =>
@@ -116,14 +120,32 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             OnAuthenticationFailed = context =>
             {
                 Console.WriteLine($"Authentication failed: {context.Exception.Message}");
+                Console.WriteLine($"Request Path: {context.HttpContext.Request.Path}");
+                Console.WriteLine($"Authorization Header: {context.HttpContext.Request.Headers["Authorization"]}");
                 return Task.CompletedTask;
             },
             OnTokenValidated = context =>
             {
                 Console.WriteLine($"Token validated for user: {context.Principal?.Identity?.Name}");
+                var claims = context.Principal?.Claims?.Select(c => $"{c.Type}:{c.Value}") ?? Enumerable.Empty<string>();
+                Console.WriteLine($"User claims: {string.Join(", ", claims)}");
+                return Task.CompletedTask;
+            },
+            OnMessageReceived = context =>
+            {
+                var accessToken = context.Request.Query["access_token"];
+                var path = context.HttpContext.Request.Path;
+                if (!string.IsNullOrEmpty(accessToken) &&
+                    (path.StartsWithSegments("/hubs/chat")))
+                {
+                    context.Token = accessToken;
+                }
                 return Task.CompletedTask;
             }
         };
+
+        // Configure JWT for SignalR
+        options.SaveToken = true;
     });
 
 // CORS configuration
@@ -184,12 +206,33 @@ app.UseStaticFiles(new StaticFileOptions
 
 // Middleware order is important!
 app.UseHttpsRedirection();
+app.UseRouting();
 app.UseCors("CorsPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
 
 // Map controllers
 app.MapControllers();
+
+// Add SignalR hub mapping - use separate hub class
+app.MapHub<ChatHub>("/api/hubs/chat");
+
+// Add test endpoint to verify JWT
+app.MapGet("/test-auth", (HttpContext context) => {
+    var user = context.User;
+    if (user.Identity?.IsAuthenticated == true)
+    {
+        return Results.Ok(new { 
+            authenticated = true, 
+            username = user.Identity.Name,
+            userId = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
+        });
+    }
+    else
+    {
+        return Results.Unauthorized();
+    }
+}).RequireAuthorization();
 
 // Global exception handling middleware
 app.UseExceptionHandler("/error");

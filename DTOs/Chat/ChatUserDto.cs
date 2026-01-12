@@ -1,4 +1,6 @@
-namespace StarApi.DTOs.User
+using System;
+
+namespace StarApi.DTOs.Chat
 {
     public class ChatUserDto
     {

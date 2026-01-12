@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("StarApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d25ea3a420ee7da8f066c102c55f4ee26806d7ea")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c610eb26d20a54f21738b14ec9f7f26730a2795b")]
 [assembly: System.Reflection.AssemblyProductAttribute("StarApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("StarApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

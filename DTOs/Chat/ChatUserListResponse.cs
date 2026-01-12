@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using StarApi.DTOs.Chat;
 
 namespace StarApi.DTOs.User
 {

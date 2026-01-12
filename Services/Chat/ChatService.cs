@@ -1,17 +1,14 @@
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using StarApi.Data;
+using StarApi.DTOs.Chat;
 using StarApi.DTOs.User;
 using StarApi.Models;
 using StarApi.Services.Interfaces;
 using System;
-using System.IO;
 using System.Linq;
-using System.Net.Mail;
 using System.Threading.Tasks;
-using BCrypt.Net;
+using System.Collections.Generic;
 
 namespace StarApi.Services
 {
@@ -19,69 +16,87 @@ namespace StarApi.Services
     {
         private readonly AppDbContext _context;
         private readonly ILogger<ChatService> _logger;
-        private readonly IFileStorageService _fileStorageService;
-        private readonly IEmailService _emailService;
 
         public ChatService(
             AppDbContext context,
-            ILogger<ChatService> logger,
-            IFileStorageService fileStorageService,
-            IEmailService emailService)
+            ILogger<ChatService> logger)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _fileStorageService = fileStorageService ?? throw new ArgumentNullException(nameof(fileStorageService));
-            _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
         }
 
-        // private async Task<string> GetAvatarUrlAsync(Guid userId, IFormFile avatarFile)
-        // {
-        //     // Check if the service has SaveAvatarToUserAsync method (SQLite storage)
-        //     var serviceType = _fileStorageService.GetType();
-        //     var saveAvatarMethod = serviceType.GetMethod("SaveAvatarToUserAsync");
-
-        //     if (saveAvatarMethod != null)
-        //     {
-        //         // Use SQLite storage
-        //         try
-        //         {
-        //             var result = saveAvatarMethod.Invoke(_fileStorageService, new object[] { userId, avatarFile });
-        //             if (result is Task<string> task)
-        //             {
-        //                 return await task;
-        //             }
-        //         }
-        //         catch (Exception ex)
-        //         {
-        //             _logger.LogError(ex, "Error saving avatar to SQLite");
-        //             throw;
-        //         }
-        //     }
-
-        //     // Fallback to file system
-        //     var fileName = $"avatar_{userId}_{DateTime.UtcNow:yyyyMMddHHmmss}{Path.GetExtension(avatarFile.FileName)}";
-        //     var filePath = await _fileStorageService.SaveImageAsync(avatarFile, "avatars", fileName);
-        //     return await _fileStorageService.GetFileUrlAsync(filePath);
-        // }
-
-        public async Task<(IEnumerable<ChatUserDto> chatUsers, int total)> GetChatUsersAsync()
+        public async Task<ChatMessageDto> SaveMessageAsync(Guid senderId, SendMessageDto message)
         {
-            var q = _context.Users.AsQueryable();
-
-            var total = await q.CountAsync();
-
-            var chatUsers = await q.Select(u => new ChatUserDto
+            var chatMessage = new ChatMessage
             {
-                Id = u.Id,
-                Username = u.Username,
-                Email = u.Email,
-                AvatarUrl = u.AvatarUrl,
-                CreatedAt = u.CreatedAt,
-                UpdatedAt = u.UpdatedAt,
-            })
+                Id = Guid.NewGuid(),
+                SenderId = senderId,
+                ReceiverId = message.ReceiverId,
+                Content = message.Content,
+                CreatedAt = DateTime.UtcNow,
+                IsRead = false
+            };
+
+            _context.ChatMessages.Add(chatMessage);
+            await _context.SaveChangesAsync();
+
+            return new ChatMessageDto
+            {
+                Id = chatMessage.Id,
+                SenderId = chatMessage.SenderId,
+                ReceiverId = chatMessage.ReceiverId,
+                Content = chatMessage.Content,
+                CreatedAt = chatMessage.CreatedAt,
+                IsRead = chatMessage.IsRead
+            };
+        }
+
+        public async Task<IEnumerable<ChatMessageDto>> GetMessagesAsync(Guid userId1, Guid userId2)
+        {
+            var messages = await _context.ChatMessages
+                .Where(m => (m.SenderId == userId1 && m.ReceiverId == userId2) ||
+                            (m.SenderId == userId2 && m.ReceiverId == userId1))
+                .OrderBy(m => m.CreatedAt)
+                .Select(m => new ChatMessageDto
+                {
+                    Id = m.Id,
+                    SenderId = m.SenderId,
+                    ReceiverId = m.ReceiverId,
+                    Content = m.Content,
+                    CreatedAt = m.CreatedAt,
+                    IsRead = m.IsRead
+                })
                 .ToListAsync();
 
-            return (chatUsers, total);
+            return messages;
         }
+
+        public async Task<ChatUserListResponseDto> GetChatUsersAsync(Guid? currentUserId = null)
+    {
+        var query = _context.Users.AsQueryable();
+        
+        // Filter out current user if provided
+        if (currentUserId.HasValue)
+        {
+            query = query.Where(u => u.Id != currentUserId.Value);
+        }
+        
+        var total = await query.CountAsync();
+        var chatUsers = await query.Select(u => new ChatUserDto
+        {
+            Id = u.Id,
+            Username = u.Username,
+            Email = u.Email,
+            AvatarUrl = u.AvatarUrl,
+            CreatedAt = u.CreatedAt,
+            UpdatedAt = u.UpdatedAt,
+        })
+        .ToListAsync();
+        return new ChatUserListResponseDto
+        {
+            ChatUsers = chatUsers,
+            Total = total
+        };
+    }
     }
 }

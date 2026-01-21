@@ -38,7 +38,7 @@ namespace StarApi.Controllers
                     return BadRequest(new { Message = validationResult.ErrorMessage });
                 }
 
-                var result = await _authService.RegisterUserAsync(dto.Username, dto.Email, dto.Password);
+                var result = await _authService.RegisterUserAsync(dto.Username, dto.Email, dto.Password, dto.Id);
 
                 if (result == null)
                 {

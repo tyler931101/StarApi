@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
@@ -32,7 +32,7 @@ namespace StarApi.Services
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<StarApi.DTOs.Auth.AuthResponseDto?> RegisterUserAsync(string username, string email, string password)
+        public async Task<StarApi.DTOs.Auth.AuthResponseDto?> RegisterUserAsync(string username, string email, string password, Guid? id = null)
         {
             try
             {
@@ -59,14 +59,29 @@ namespace StarApi.Services
                     return null;
                 }
 
+                // If external Id provided, ensure it does not collide
+                if (id.HasValue)
+                {
+                    var idExists = await _context.Users.AnyAsync(u => u.Id == id.Value);
+                    if (idExists)
+                    {
+                        _logger.LogWarning("Registration attempt with existing Id: {Id}", id.Value);
+                        return null;
+                    }
+                }
+
+                // Determine role: first user becomes Admin, others User
+                var anyUsers = await _context.Users.AnyAsync();
+                var role = anyUsers ? "User" : "Admin";
+
                 // Create user
                 var user = new User
                 {
-                    Id = Guid.NewGuid(), // Make sure User model has Id property
+                    Id = id ?? Guid.NewGuid(),
                     Username = username,
                     Email = email,
                     PasswordHash = BCrypt.Net.BCrypt.HashPassword(password),
-                    Role = "User", // Default role
+                    Role = role,
                     Status = "Active",
                     CreatedAt = DateTime.UtcNow,
                     IsVerified = false,

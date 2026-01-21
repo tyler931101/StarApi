@@ -5,6 +5,7 @@ namespace StarApi.DTOs.Ticket
 {
     public class CreateTicketDto
     {
+        public Guid? Id { get; set; }
         [Required]
         [StringLength(150, MinimumLength = 3)]
         public string Title { get; set; } = string.Empty;

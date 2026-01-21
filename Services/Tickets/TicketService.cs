@@ -147,12 +147,20 @@ namespace StarApi.Services
 
         public async Task<TicketDto?> CreateTicketAsync(Guid creatorUserId, CreateTicketDto dto)
         {
+            if (dto.Id.HasValue)
+            {
+                var exists = await _context.Tickets.AnyAsync(t => t.Id == dto.Id.Value);
+                if (exists)
+                {
+                    return null;
+                }
+            }
             var ticket = new Ticket
             {
-                Id = Guid.NewGuid(),
+                Id = dto.Id ?? Guid.NewGuid(),
                 Title = dto.Title.Trim(),
                 Description = dto.Description,
-                Status = "Todo",
+                Status = NormalizeStatus(dto.Status),
                 Priority = NormalizePriority(dto.Priority),
                 AssignedTo = dto.AssignedTo,
                 CreatedAt = DateTime.UtcNow,

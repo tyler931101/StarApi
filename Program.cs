@@ -1,4 +1,3 @@
-// Updated Program.cs
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Builder;

@@ -118,9 +118,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         {
             OnAuthenticationFailed = context =>
             {
-                Console.WriteLine($"Authentication failed: {context.Exception.Message}");
-                Console.WriteLine($"Request Path: {context.HttpContext.Request.Path}");
-                Console.WriteLine($"Authorization Header: {context.HttpContext.Request.Headers["Authorization"]}");
+                var path = context.HttpContext.Request.Path;
+                // Suppress noisy logs for auth endpoints
+                if (!path.StartsWithSegments("/api/auth"))
+                {
+                    Console.WriteLine($"Authentication failed: {context.Exception.Message}");
+                    Console.WriteLine($"Request Path: {path}");
+                    Console.WriteLine($"Authorization Header: {context.HttpContext.Request.Headers["Authorization"]}");
+                }
                 return Task.CompletedTask;
             },
             OnTokenValidated = context =>
@@ -134,6 +139,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             {
                 var accessToken = context.Request.Query["access_token"];
                 var path = context.HttpContext.Request.Path;
+                
+                // Do not attempt JWT auth on auth endpoints (login/register/refresh/verify)
+                if (path.StartsWithSegments("/api/auth"))
+                {
+                    context.Token = null;
+                    return Task.CompletedTask;
+                }
+                
                 if (!string.IsNullOrEmpty(accessToken) &&
                     (path.StartsWithSegments("/hubs/chat")))
                 {

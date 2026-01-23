@@ -339,3 +339,4 @@ E:\work\TicketManagementSystem\StarApi\obj\Debug\net9.0\refint\StarApi.dll
 E:\work\TicketManagementSystem\StarApi\obj\Debug\net9.0\StarApi.pdb
 E:\work\TicketManagementSystem\StarApi\obj\Debug\net9.0\StarApi.genruntimeconfig.cache
 E:\work\TicketManagementSystem\StarApi\obj\Debug\net9.0\ref\StarApi.dll
+E:\work\TicketManagementSystem\StarApi\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt

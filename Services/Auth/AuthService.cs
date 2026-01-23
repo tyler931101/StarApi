@@ -200,7 +200,8 @@ namespace StarApi.Services
                 //     return (null, null, "Your account has been locked. Please contact support.");
                 // }
 
-                if (user.Status == "InActive")
+                if (string.Equals(user.Status ?? string.Empty, "Inactive", StringComparison.OrdinalIgnoreCase) 
+                    || string.Equals(user.Status ?? string.Empty, "InActive", StringComparison.OrdinalIgnoreCase))
                 {
                     _logger.LogWarning("Login attempt for disabled account: {Email}", email);
                     return (null, null, "Your account is disabled. Please contact support.");

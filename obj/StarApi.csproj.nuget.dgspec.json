@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "e:\\work\\TicketManagementSystem\\StarApi\\StarApi.csproj": {}
+    "E:\\work\\TicketManagementSystem\\StarApi\\StarApi.csproj": {}
   },
   "projects": {
-    "e:\\work\\TicketManagementSystem\\StarApi\\StarApi.csproj": {
+    "E:\\work\\TicketManagementSystem\\StarApi\\StarApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "e:\\work\\TicketManagementSystem\\StarApi\\StarApi.csproj",
+        "projectUniqueName": "E:\\work\\TicketManagementSystem\\StarApi\\StarApi.csproj",
         "projectName": "StarApi",
-        "projectPath": "e:\\work\\TicketManagementSystem\\StarApi\\StarApi.csproj",
+        "projectPath": "E:\\work\\TicketManagementSystem\\StarApi\\StarApi.csproj",
         "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "e:\\work\\TicketManagementSystem\\StarApi\\obj\\",
+        "outputPath": "E:\\work\\TicketManagementSystem\\StarApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

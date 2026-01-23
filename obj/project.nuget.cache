@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "x5C4tQMo21U=",
+  "dgSpecHash": "ZwxrVhzzdhM=",
   "success": true,
-  "projectFilePath": "e:\\work\\TicketManagementSystem\\StarApi\\StarApi.csproj",
+  "projectFilePath": "E:\\work\\TicketManagementSystem\\StarApi\\StarApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Administrator\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

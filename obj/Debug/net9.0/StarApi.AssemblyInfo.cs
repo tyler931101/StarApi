@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("StarApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c67afd0e9f01ca82811a113012ec37da4dd8076e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+129c4aab0205ed1df595ee3df4b9fc5690cc3307")]
 [assembly: System.Reflection.AssemblyProductAttribute("StarApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("StarApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
